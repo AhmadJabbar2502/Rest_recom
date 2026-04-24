@@ -89,6 +89,9 @@ html, body, [class*="css"] {
 [data-testid="stSidebar"] textarea::placeholder { color: rgba(255,255,255,0.45) !important; }
 [data-testid="stSidebar"] input:focus,
 [data-testid="stSidebar"] textarea:focus { border-color: var(--teal-light) !important; }
+/* Force visible text in sidebar inputs */
+[data-testid="stSidebar"] textarea,
+[data-testid="stSidebar"] input[type="text"] { color: var(--white) !important; caret-color: var(--white) !important; }
 
 /* ── Sidebar logo block ── */
 .sidebar-logo {
@@ -455,11 +458,12 @@ def render_rec_card(i, row, mode="pinecone"):
     score_chips = ""
     if mode == "pinecone":
         pine_s = row.get("pinecone_score", 0)
-        score_chips = f"""
-        <div class='rec-score-row'>
-          <div class='rec-score-chip'>Similarity <span>{pine_s:.3f}</span></div>
-          <div class='rec-score-chip'>Avg Stars <span>⭐ {stars:.1f}</span></div>
-        </div>"""
+        score_chips = (
+            "<div class='rec-score-row'>"
+            f"<div class='rec-score-chip'>Similarity <span>{pine_s:.3f}</span></div>"
+            f"<div class='rec-score-chip'>Avg Stars <span>⭐ {stars:.1f}</span></div>"
+            "</div>"
+        )
     elif mode in ("hybrid", "hybrid_boosted"):
         svd_s    = row.get("svd_score", 0)
         knn_s    = row.get("knn_score", 0)
@@ -467,14 +471,15 @@ def render_rec_card(i, row, mode="pinecone"):
         pine_chip = ""
         if "pine_score" in row and mode == "hybrid_boosted":
             pine_chip = f"<div class='rec-score-chip'>Pinecone <span>{row['pine_score']:.3f}</span></div>"
-        score_chips = f"""
-        <div class='rec-score-row'>
-          <div class='rec-score-chip'>SVD <span>{svd_s:.3f}</span></div>
-          <div class='rec-score-chip'>KNN <span>{knn_s:.3f}</span></div>
-          {pine_chip}
-          <div class='rec-score-chip'>Hybrid <span>{hybrid_s:.4f}</span></div>
-          <div class='rec-score-chip'>Avg Stars <span>⭐ {stars:.1f}</span></div>
-        </div>"""
+        score_chips = (
+            "<div class='rec-score-row'>"
+            f"<div class='rec-score-chip'>SVD <span>{svd_s:.3f}</span></div>"
+            f"<div class='rec-score-chip'>KNN <span>{knn_s:.3f}</span></div>"
+            f"{pine_chip}"
+            f"<div class='rec-score-chip'>Hybrid <span>{hybrid_s:.4f}</span></div>"
+            f"<div class='rec-score-chip'>Avg Stars <span>⭐ {stars:.1f}</span></div>"
+            "</div>"
+        )
 
     desc_html = f"<div class='rec-desc'>{desc}</div>" if desc and desc != "N/A" else ""
 
