@@ -77,21 +77,28 @@ html, body, [class*="css"] {
 [data-baseweb="popover"] li, [data-baseweb="popover"] span, [data-baseweb="popover"] div { color: #1A2744 !important; }
 [data-baseweb="menu"] { background: white !important; }
 [data-baseweb="menu"] li:hover { background: #F5F0E8 !important; }
-/* Text input & textarea */
+/* Text input & textarea - white bg so text is always visible */
 [data-testid="stSidebar"] input,
-[data-testid="stSidebar"] textarea {
-    background: rgba(255,255,255,0.10) !important;
-    border: 1px solid rgba(61,189,189,0.4) !important;
-    color: var(--white) !important;
+[data-testid="stSidebar"] textarea,
+[data-testid="stSidebar"] [data-testid="stTextInput"] input,
+[data-testid="stSidebar"] [data-testid="stTextArea"] textarea {
+    background: rgba(255,255,255,0.92) !important;
+    border: 1px solid rgba(61,189,189,0.6) !important;
+    color: #1A2744 !important;
+    -webkit-text-fill-color: #1A2744 !important;
+    caret-color: #1A2744 !important;
     border-radius: 8px !important;
 }
 [data-testid="stSidebar"] input::placeholder,
-[data-testid="stSidebar"] textarea::placeholder { color: rgba(255,255,255,0.45) !important; }
+[data-testid="stSidebar"] textarea::placeholder {
+    color: #888 !important;
+    -webkit-text-fill-color: #888 !important;
+}
 [data-testid="stSidebar"] input:focus,
-[data-testid="stSidebar"] textarea:focus { border-color: var(--teal-light) !important; }
-/* Force visible text in sidebar inputs */
-[data-testid="stSidebar"] textarea,
-[data-testid="stSidebar"] input[type="text"] { color: var(--white) !important; caret-color: var(--white) !important; }
+[data-testid="stSidebar"] textarea:focus {
+    border-color: #3DBDBD !important;
+    outline: none !important;
+}
 
 /* ── Sidebar logo block ── */
 .sidebar-logo {
