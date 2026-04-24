@@ -46,8 +46,8 @@ html, body, [class*="css"] {
 }
 
 /* ── Hide streamlit chrome ── */
-#MainMenu, footer, header { visibility: hidden; }
-.block-container { padding-top: 1.5rem !important; padding-bottom: 2rem; }
+#MainMenu, footer { visibility: hidden; }
+.block-container { padding-top: 4.5rem !important; padding-bottom: 2rem; }
 
 /* ── Sidebar ── */
 [data-testid="stSidebar"] {
