@@ -9,7 +9,7 @@ import os
 # ─── Page config ──────────────────────────────────────────────────────────────
 st.set_page_config(
     page_title="Restaurant Recommender",
-    page_icon="🍽️",
+    page_icon="",
     layout="wide",
     initial_sidebar_state="expanded"
 )
@@ -494,7 +494,7 @@ def render_rec_card(i, row, mode="pinecone"):
     <div class='rec-card {rank_cls}'>
       <div class='rec-rank'>#{i+1}</div>
       <div class='rec-name'>{name}</div>
-      <div class='rec-meta'>📍 {city}, {state}</div>
+      <div class='rec-meta'>{city}, {state}</div>
       <span class='rec-cat'>{cat}</span>
       <span class='rec-stars'>{stars_html(stars)} {stars:.1f}</span>
       {score_chips}
@@ -517,9 +517,9 @@ def weight_bar(svd_w, knn_w, pine_w=0):
         <div class='wb-pine' style='width:{pine_pct}%' title='Pinecone {pine_pct}%'></div>
       </div>
       <div style='display:flex;gap:1.2rem;margin-top:0.4rem;font-size:0.7rem;color:#4A5568;'>
-        <span>🟦 SVD {svd_pct}%</span>
-        <span>🟫 KNN {knn_pct}%</span>
-        {"<span>🟨 Pinecone " + str(pine_pct) + "%</span>" if pine_w else ""}
+        <span>SVD {svd_pct}%</span>
+        <span>KNN {knn_pct}%</span>
+        {"<span>Pinecone " + str(pine_pct) + "%</span>" if pine_w else ""}
       </div>
     </div>
     """, unsafe_allow_html=True)
@@ -535,7 +535,7 @@ with st.spinner("Loading models…"):
 with st.sidebar:
     st.markdown("""
     <div class='sidebar-logo'>
-      <h1>🍽️ Restaurant<br>Recommender</h1>
+      <h1>Restaurant<br>Recommender</h1>
       <p>CSE 881 · Data Mining</p>
     </div>
     """, unsafe_allow_html=True)
@@ -554,7 +554,7 @@ with st.sidebar:
 
         # Demo: pick a random known user
         if train_ok and not train_df.empty:
-            if st.button("🎲 Pick random user"):
+            if st.button("Pick random user"):
                 sample = train_df["user_id"].sample(1).iloc[0]
                 st.session_state["demo_user"] = sample
             if "demo_user" in st.session_state:
@@ -585,16 +585,16 @@ with st.sidebar:
     top_k = st.slider("# of recommendations", 1, 10, 3)
 
     st.markdown("<br>", unsafe_allow_html=True)
-    run_btn = st.button("🔍 Get Recommendations")
+    run_btn = st.button("Get Recommendations")
 
 # ─── Main area ────────────────────────────────────────────────────────────────
-tab1, tab2, tab3 = st.tabs(["🎯 Recommendations", "📊 Model Performance", "⚙️ System Overview"])
+tab1, tab2, tab3 = st.tabs(["Recommendations", "Model Performance", "System Overview"])
 
 with tab1:
     # Header
     st.markdown("""
     <div class='main-header'>
-      <div class='main-header-icon'>🍽️</div>
+      <div class='main-header-icon'></div>
       <div>
         <h2>Restaurant Recommendation System</h2>
         <p>Hybrid SVD · KNN · Pinecone Semantic Search — Powered by the Yelp Dataset</p>
@@ -606,12 +606,12 @@ with tab1:
     st.markdown("<div class='metrics-row'>", unsafe_allow_html=True)
     col1, col2, col3, col4 = st.columns(4)
     with col1:
-        pine_status = "✅ Live" if pine_ok else "❌ Offline"
+        pine_status = "Live" if pine_ok else "Offline"
         st.markdown(f"<div class='metric-pill'><div class='mp-label'>Pinecone</div><div class='mp-value' style='font-size:1.1rem'>{pine_status}</div><div class='mp-sub'>Vector DB</div></div>", unsafe_allow_html=True)
     with col2:
-        st.markdown(f"<div class='metric-pill navy'><div class='mp-label'>SVD Model</div><div class='mp-value' style='font-size:1.1rem'>✅ Active</div><div class='mp-sub'>RMSE 0.76</div></div>", unsafe_allow_html=True)
+        st.markdown(f"<div class='metric-pill navy'><div class='mp-label'>SVD Model</div><div class='mp-value' style='font-size:1.1rem'>Active</div><div class='mp-sub'>RMSE 0.76</div></div>", unsafe_allow_html=True)
     with col3:
-        st.markdown("<div class='metric-pill gold'><div class='mp-label'>KNN Model</div><div class='mp-value' style='font-size:1.1rem'>✅ Active</div><div class='mp-sub'>RMSE 0.85</div></div>", unsafe_allow_html=True)
+        st.markdown("<div class='metric-pill gold'><div class='mp-label'>KNN Model</div><div class='mp-value' style='font-size:1.1rem'>Active</div><div class='mp-sub'>RMSE 0.85</div></div>", unsafe_allow_html=True)
     with col4:
         n_rest = f"{len(business_meta):,}" if meta_ok and not business_meta.empty else "33K+"
         st.markdown(f"<div class='metric-pill'><div class='mp-label'>Restaurants</div><div class='mp-value'>{n_rest}</div><div class='mp-sub'>Indexed</div></div>", unsafe_allow_html=True)
@@ -620,7 +620,7 @@ with tab1:
     if not run_btn:
         st.markdown("""
         <div class='empty-state'>
-          <div class='es-icon'>🔍</div>
+          <div class='es-icon'></div>
           <p><strong>Configure your preferences in the sidebar</strong> and click<br><em>Get Recommendations</em> to discover your next favorite restaurant.</p>
         </div>
         """, unsafe_allow_html=True)
@@ -646,7 +646,7 @@ with tab1:
             else:
                 svd_w, knn_w, pine_w = 0.6, 0.4, 0.0
 
-            st.markdown(f"<div class='strategy-badge hybrid'>⚡ Strategy: {strategy_label}</div>", unsafe_allow_html=True)
+            st.markdown(f"<div class='strategy-badge hybrid'>Strategy: {strategy_label}</div>", unsafe_allow_html=True)
             weight_bar(svd_w, knn_w, pine_w)
 
             if not pine_ok:
@@ -660,7 +660,7 @@ with tab1:
                     )
 
                 if isinstance(results, pd.DataFrame) and not results.empty:
-                    st.markdown(f"<div class='section-heading'>🎯 Top {len(results)} Recommendations for you</div>", unsafe_allow_html=True)
+                    st.markdown(f"<div class='section-heading'>Top {len(results)} Recommendations for you</div>", unsafe_allow_html=True)
                     for i, (_, row) in enumerate(results.iterrows()):
                         render_rec_card(i, row, mode=strategy)
                 else:
@@ -668,18 +668,18 @@ with tab1:
 
         # ── NEW USER (Pinecone) ────────────────────────────────────────────────
         else:
-            st.markdown("<div class='strategy-badge pinecone'>🔷 Strategy: Pinecone Semantic Search (Cold Start)</div>", unsafe_allow_html=True)
+            st.markdown("<div class='strategy-badge pinecone'>Strategy: Pinecone Semantic Search (Cold Start)</div>", unsafe_allow_html=True)
 
             if not pref_text:
                 st.warning("Please describe your food preferences in the sidebar to get recommendations.")
             elif not pine_ok:
                 st.error(f"Pinecone is offline — cannot generate recommendations.\n\n`{pine_err}`")
             else:
-                with st.spinner("Searching 30,000+ restaurants semantically…"):
+                with st.spinner("Searching 30,000+ restaurants semantically..."):
                     results = pinecone_search(embedder, pine_index, pref_text, city=city_val, state=state_val, top_k=top_k)
 
                 if not results.empty:
-                    st.markdown(f"<div class='section-heading'>🎯 Top {len(results)} Matches for: \"{pref_text[:50]}{'…' if len(pref_text) > 50 else ''}\"</div>", unsafe_allow_html=True)
+                    st.markdown(f"<div class='section-heading'>Top {len(results)} Matches for: \"{pref_text[:50]}{'…' if len(pref_text) > 50 else ''}\"</div>", unsafe_allow_html=True)
                     for i, (_, row) in enumerate(results.iterrows()):
                         render_rec_card(i, row, mode="pinecone")
                 else:
@@ -688,7 +688,7 @@ with tab1:
 with tab2:
     st.markdown("""
     <div style='font-family: Space Grotesk, sans-serif; font-size:1.4rem; font-weight:700; color:#1A2744; margin-bottom:1.5rem;'>
-      📊 Model Performance — Evaluated on 394,986 Test Ratings
+      Model Performance — Evaluated on 394,986 Test Ratings
     </div>
     """, unsafe_allow_html=True)
 
@@ -704,7 +704,7 @@ with tab2:
             <div><div style='font-size:2.5rem;font-weight:700;font-family:Space Grotesk,sans-serif;'>0.8341</div><div style='font-size:0.72rem;opacity:0.8;'>MAE (stars)</div></div>
           </div>
           <div style='margin-top:1rem;background:rgba(255,255,255,0.15);border-radius:8px;padding:0.5rem 0.8rem;font-size:0.78rem;'>
-            ✅ Used at weight <strong>0.6</strong> in hybrid model
+            Used at weight <strong>0.6</strong> in hybrid model
           </div>
         </div>
         """, unsafe_allow_html=True)
@@ -767,7 +767,7 @@ with tab2:
 with tab3:
     st.markdown("""
     <div style='font-family:Space Grotesk,sans-serif;font-size:1.4rem;font-weight:700;color:#1A2744;margin-bottom:1.5rem;'>
-      ⚙️ System Architecture
+      System Architecture
     </div>
     """, unsafe_allow_html=True)
 
@@ -779,7 +779,7 @@ with tab3:
     </div>
 
     <div style='background:white;border-radius:16px;padding:1.5rem;box-shadow:0 4px 20px rgba(26,39,68,0.1);margin-bottom:1.2rem;'>
-      <div class='section-heading'>🔷 New User Path (Pinecone)</div>
+      <div class='section-heading'>New User Path (Pinecone)</div>
       <div class='pipeline-row'>
         <div class='pipe-step active'>Free-text input</div>
         <div class='pipe-arrow'>→</div>
@@ -798,7 +798,7 @@ with tab3:
     </div>
 
     <div style='background:white;border-radius:16px;padding:1.5rem;box-shadow:0 4px 20px rgba(26,39,68,0.1);margin-bottom:1.2rem;'>
-      <div class='section-heading'>⚡ Existing User Path (Hybrid)</div>
+      <div class='section-heading'>Existing User Path (Hybrid)</div>
       <div class='pipeline-row'>
         <div class='pipe-step active'>User ID lookup</div>
         <div class='pipe-arrow'>→</div>
@@ -818,7 +818,7 @@ with tab3:
     </div>
 
     <div style='background:white;border-radius:16px;padding:1.5rem;box-shadow:0 4px 20px rgba(26,39,68,0.1);'>
-      <div class='section-heading'>🛠️ Tech Stack</div>
+      <div class='section-heading'>Tech Stack</div>
       <div style='display:flex;flex-wrap:wrap;gap:0.6rem;'>
     """ + "".join([
         f"<span style='background:#F5F0E8;color:#1B6E6E;font-size:0.78rem;font-weight:600;border-radius:50px;padding:0.3rem 0.9rem;border:1px solid rgba(46,139,139,0.3);'>{t}</span>"
